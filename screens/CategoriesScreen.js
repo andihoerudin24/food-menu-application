@@ -6,26 +6,23 @@ import {
   FlatList,
   Button,
   TouchableOpacity,
-  Platform
 } from "react-native";
-
 import { CATEGORIES } from "../data/dummy-data";
-import { HeaderTitle } from "@react-navigation/stack";
+import CategoriGridTile from "../components/CategoryGridtile";
 import Color from "../constant/Color";
 
 const CategoriScreen = (props) => {
   const renderGridItem = (itemData) => {
     return (
-      <TouchableOpacity
-        style={styles.GridItem}
-        onPress={() => {
-          props.navigation.navigate("CategoriMealScreen");
+      <CategoriGridTile
+        title={itemData.item.title}
+        onSelect={() => {
+          props.navigation.navigate("CategoriMealScreen", {
+            categoryId: itemData.item.id,
+          });
         }}
-      >
-        <View>
-          <Text>{itemData.item.title}</Text>
-        </View>
-      </TouchableOpacity>
+        color={itemData.item.color}
+      />
     );
   };
 
@@ -39,28 +36,18 @@ const CategoriScreen = (props) => {
   );
 };
 
-export const ScreenOption  = navData =>{
-   return{
-    headerTitle:'Meal Categori',
+export const ScreenOption = (navData) => {
+  return {
+    headerTitle: "Meal Categori",
     headerStyle:{
-       backgroundColor:Platform.OS === 'android' ? Color.primaryColor : '' ,
+      backgroundColor:Platform.OS === 'android' ? Color.primaryColor : '' ,
     },
     headerTintColor:Platform.OS === 'android' ? 'white' : Color.primaryColor
-   
-  }
-}
+  };
+};
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  GridItem: {
-    flex: 1,
-    margin: 15,
-    height: 150,
-  },
+  
 });
 
 export default CategoriScreen;
