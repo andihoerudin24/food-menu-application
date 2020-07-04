@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator} from '@react-navigation/stack'
 import CategoriScreen,{ScreenOption as ScreenOptionCategori}  from '../screens/CategoriesScreen'
 import CategoriMealScreen,{ScreenOption as ScreenOptionMealScreen}  from '../screens/CategoryMealScreen'
-import MealDetailScreen  from '../screens/MealDetailScreen'
+import MealDetailScreen,{NavigationOptions as ScreenOptionMealDetail }  from '../screens/MealDetailScreen'
 
 const Stack = createStackNavigator();
 
@@ -13,7 +13,7 @@ const Navigation = () =>{
         <Stack.Navigator>
           <Stack.Screen name="Categories" component={CategoriScreen} options={ScreenOptionCategori} />
           <Stack.Screen name="CategoriMealScreen" component={CategoriMealScreen} options={ScreenOptionMealScreen} />
-          <Stack.Screen name="MealDetailScreen" component={MealDetailScreen} />
+          <Stack.Screen name="MealDetailScreen" component={MealDetailScreen} options={ScreenOptionMealDetail} />
         </Stack.Navigator>
       </NavigationContainer>
     )
