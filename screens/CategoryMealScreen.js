@@ -9,39 +9,16 @@ import {
 } from "react-native";
 import { CATEGORIES, MEALS } from "../data/dummy-data";
 import Color from "../constant/Color";
-import MealItem from "../components/MealItem";
+import MealList from "../components/Meallist";
 const CategoriMealScreen = (props) => {
-
-  const renderMealItem = (itemData) => {
-    return (
-      <MealItem
-        onSelectMeal={() => {
-          props.navigation.navigate('MealDetailScreen',{
-            mealId:itemData.item.id
-          })
-        }}
-        title={itemData.item.title}
-        duration={itemData.item.duration}
-        complexity={itemData.item.complexity}
-        affordability={itemData.item.affordability}
-        image={itemData.item.imageUrl}
-      />
-    );
-  };
+ 
   const CatId = props.route.params.categoryId;
   const displayMeals = MEALS.filter(
     (meal) => meal.ctagoryId.indexOf(CatId) >= 0
   );
-
+ 
   return (
-    <View style={styles.screen}>
-      <FlatList
-        data={displayMeals}
-        keyExtractor={(item, index) => item.id}
-        renderItem={renderMealItem}
-        style={{ width: "100%" }}
-      />
-    </View>
+      <MealList  listData={displayMeals} navigation={props.navigation} />
   );
 };
 
@@ -58,11 +35,7 @@ export const ScreenOption = (navData) => {
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  
 });
 
 export default CategoriMealScreen;
