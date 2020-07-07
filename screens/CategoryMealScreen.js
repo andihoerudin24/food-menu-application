@@ -11,12 +11,10 @@ import { CATEGORIES, MEALS } from "../data/dummy-data";
 import Color from "../constant/Color";
 import MealList from "../components/Meallist";
 const CategoriMealScreen = (props) => {
- 
   const CatId = props.route.params.categoryId;
   const displayMeals = MEALS.filter(
     (meal) => meal.ctagoryId.indexOf(CatId) >= 0
   );
- 
   return (
       <MealList  listData={displayMeals} navigation={props.navigation} />
   );
@@ -31,6 +29,12 @@ export const ScreenOption = (navData) => {
       backgroundColor: Platform.OS === "android" ? Color.primaryColor : "",
     },
     headerTintColor: Platform.OS === "android" ? "white" : Color.primaryColor,
+    headerTitleStyle: {
+      fontFamily: 'open-sans-bold',
+    },
+    headerBackTitleStyle:{
+      fontFamily:'open-sans'
+    }
   };
 };
 
