@@ -1,8 +1,14 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Button, Platform, Switch } from "react-native";
+import React, { useState,useEffect,useCallback } from "react";
+import { View, Text, StyleSheet, Button, Platform, Switch,YellowBox  } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import Color from "../constant/Color";
+import { CommonActions } from '@react-navigation/native';
+
+
+YellowBox.ignoreWarnings([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const FilterSwitch = (props) => {
   return (
@@ -23,6 +29,20 @@ const FilterScreen = (props) => {
   const [isLactoseFree, setisLactoseFree] = useState(false);
   const [isVegan, setisVegan] = useState(false);
   const [isVegetarian, setIsisVegetarian] = useState(false);
+
+  const saveFilters = useCallback(() =>{
+      const appliedFilters ={
+        glutenFree:isGlutenFree,
+        lactoseFree:isLactoseFree,
+        vegan:isVegan,
+        vegetarian:isVegetarian
+      }
+      console.log(appliedFilters);
+  },[isGlutenFree,isLactoseFree,isVegan,isVegetarian])
+
+  useEffect(()=>{
+    props.navigation.dispatch(CommonActions.setParams({ user: saveFilters }));
+  },[saveFilters])
 
   return (
     <View style={styles.screen}>
@@ -71,6 +91,20 @@ export const NavigationOptions = (NavData) => {
           />
         </HeaderButtons>
       );
+    },
+    headerRight:() =>{
+      return(
+        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName="ios-save"
+          onPress={
+            NavData.route.params?.user ?? 'defaultValue'
+          }
+          color="white"
+        />
+      </HeaderButtons>
+      )
     },
     headerTitleStyle: {
       fontFamily: "open-sans-bold",

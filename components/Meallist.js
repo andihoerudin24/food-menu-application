@@ -9,6 +9,7 @@ const Meallist = (props) => {
         onSelectMeal={() => {
           props.navigation.navigate("MealDetailScreen", {
             mealId: itemData.item.id,
+            mealTitle:itemData.item.title
           });
        
         }}

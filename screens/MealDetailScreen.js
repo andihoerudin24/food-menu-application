@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   View,
   Text,
@@ -9,10 +9,11 @@ import {
   Image,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { MEALS } from "../data/dummy-data";
+import {useSelector} from 'react-redux'
 import HeaderButton from "../components/HeaderButton";
 import Color from "../constant/Color";
 import DefaultText from "../components/DefaultText";
+import { CommonActions } from '@react-navigation/native';
 
 const ListItem = props => { 
    return(
@@ -23,8 +24,15 @@ const ListItem = props => {
 }
 
 const MealDetailScreen = (props) => {
+  const avaliableMeal =  useSelector(state=> state.meals.meals)
   const mealId = props.route.params.mealId;
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const selectedMeal = avaliableMeal.find((meal) => meal.id === mealId);
+
+  // useEffect(()=>{
+  //     props.navigation.dispatch(CommonActions.setParams({mealTitle: selectedMeal.title }));
+  //     console.log('useEfect')
+  // },[selectedMeal])
+
   return (
     <ScrollView>
       <Image source={{uri:selectedMeal.imageUrl}} style={styles.image} />
@@ -49,9 +57,10 @@ const MealDetailScreen = (props) => {
 
 export const NavigationOptions = (NavData) => {
   const mealid = NavData.route.params.mealId;
-  const selectedMeal = MEALS.find((meal) => meal.id === mealid);
-  return {
-    headerTitle: selectedMeal.title,
+   //const selectedMeal = MEALS.find((meal) => meal.id === mealid);
+  const mealTitle =  NavData.route.params?.mealTitle ?? 'defaultValue'
+   return {
+    headerTitle: mealTitle,
     headerStyle: {
       backgroundColor: Platform.OS === "android" ? Color.primaryColor : "",
     },
