@@ -4,7 +4,8 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import Color from "../constant/Color";
 import { CommonActions } from '@react-navigation/native';
-
+import {useDispatch} from 'react-redux'
+import { setFilters } from "../store/actions/meals";
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
@@ -29,7 +30,7 @@ const FilterScreen = (props) => {
   const [isLactoseFree, setisLactoseFree] = useState(false);
   const [isVegan, setisVegan] = useState(false);
   const [isVegetarian, setIsisVegetarian] = useState(false);
-
+  const dispatch = useDispatch()
   const saveFilters = useCallback(() =>{
       const appliedFilters ={
         glutenFree:isGlutenFree,
@@ -37,7 +38,7 @@ const FilterScreen = (props) => {
         vegan:isVegan,
         vegetarian:isVegetarian
       }
-      console.log(appliedFilters);
+      dispatch(setFilters(appliedFilters))
   },[isGlutenFree,isLactoseFree,isVegan,isVegetarian])
 
   useEffect(()=>{
