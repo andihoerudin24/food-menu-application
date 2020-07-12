@@ -1,19 +1,19 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useCallback} from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Button,
   Platform,
   ScrollView,
   Image,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
 import HeaderButton from "../components/HeaderButton";
 import Color from "../constant/Color";
 import DefaultText from "../components/DefaultText";
 import { CommonActions } from '@react-navigation/native';
+import { toogleFavorite } from "../store/actions/meals";
 
 const ListItem = props => { 
    return(
@@ -26,12 +26,22 @@ const ListItem = props => {
 const MealDetailScreen = (props) => {
   const avaliableMeal =  useSelector(state=> state.meals.meals)
   const mealId = props.route.params.mealId;
+  const cuurentMealFavorite = useSelector(state => state.meals.favoriteMeal.some(meal => meal.id ===  mealId))
   const selectedMeal = avaliableMeal.find((meal) => meal.id === mealId);
+  const dispatch = useDispatch()
+  
+  const toogleFavoriteHandle =useCallback(() =>{
+    dispatch(toogleFavorite(mealId))
+  },[dispatch,mealId])
 
-  // useEffect(()=>{
-  //     props.navigation.dispatch(CommonActions.setParams({mealTitle: selectedMeal.title }));
-  //     console.log('useEfect')
-  // },[selectedMeal])
+  useEffect(()=>{
+      props.navigation.dispatch(CommonActions.setParams({toogleFav: toogleFavoriteHandle }));
+  },[toogleFavorite])
+
+  useEffect(()=>{
+    props.navigation.dispatch(CommonActions.setParams({isFav:cuurentMealFavorite}))
+  },[cuurentMealFavorite])
+
 
   return (
     <ScrollView>
@@ -56,10 +66,12 @@ const MealDetailScreen = (props) => {
 };
 
 export const NavigationOptions = (NavData) => {
-  const mealid = NavData.route.params.mealId;
+  //const mealid = NavData.route.params.mealId;
    //const selectedMeal = MEALS.find((meal) => meal.id === mealid);
   const mealTitle =  NavData.route.params?.mealTitle ?? 'defaultValue'
-   return {
+  const toogleFavorite =  NavData.route.params?.toogleFav ?? 'defaultValue'
+  const isFavorite = NavData.route.params?.isFav ?? 'defauflt'
+  return {
     headerTitle: mealTitle,
     headerStyle: {
       backgroundColor: Platform.OS === "android" ? Color.primaryColor : "",
@@ -70,10 +82,8 @@ export const NavigationOptions = (NavData) => {
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
             title="Favorite"
-            iconName="ios-star"
-            onPress={() => {
-              console.log("mark as favorite");
-            }}
+            iconName={isFavorite ? "ios-star" : "ios-star-outline"}
+            onPress={toogleFavorite}
           />
         </HeaderButtons>
       );
